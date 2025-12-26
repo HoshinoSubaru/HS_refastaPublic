@@ -1,0 +1,92 @@
+php_value upload_max_filesize "50M"
+php_value post_max_size "500M"
+php_value memory_limit "256M"
+
+order deny,allow
+deny from all
+# private IP
+allow from 192.168.0.0/16
+allow from 172.16.0.0/12
+allow from 10.0.0.0/8
+allow from localhost
+allow from 127.0.0.1
+allow from rifa.life
+
+allow from 133.242.11.164
+allow from 124.219.164.138
+allow from 42.144.137.11
+allow from 35.200.102.26
+allow from 34.85.39.220
+allow from 35.189.145.255
+allow from 157.7.137.204
+allow from 219.99.38.40
+allow from 113.43.205.138
+allow from 219.117.6.240
+allow from 218.110.159.1
+allow from 113.144.195.245
+allow from 126.147.46.150
+allow from 125.12.177.215
+allow from 126.1.22.130
+allow from 125.30.72.16
+allow from 210.167.248.89
+allow from 114.149.160.8
+allow from 118.103.19.198
+allow from 118.241.118.223
+#izanagi
+allow from 35.189.145.255
+
+#買取サーバーからのみアクセス許可する。
+#allow from 34.85.39.220
+
+#着物買取サーバー
+allow from 162.43.117.17
+
+#nishitaniVPN
+allow from 160.16.203.204
+#loungeVPN
+allow from 153.127.26.171
+
+# mitsui 20220731
+allow from 60.112.176.217
+
+RewriteEngine on
+
+# 強制的にHTTPS接続にする
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+
+##############################
+# URLからpublicを削除するコード
+##############################
+<IfModule mod_rewrite.c>
+    #<IfModule mod_negotiation.c>
+    #    Options -MultiViews
+    #</IfModule>
+
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} -d [OR]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ ^$1 [N]
+
+    RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+    RewriteRule ^(.*)$ public/$1
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ server.php
+
+</IfModule>
+##############################
+# URLからpublicを削除するコード END
+##############################
+
+<Files ~ "^\.(htaccess|htpasswd)$">
+deny from all
+</Files>
+
+<IfModule pagespeed_module>
+    ModPagespeed off
+
+</IfModule>

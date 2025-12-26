@@ -1,0 +1,84 @@
+html body {
+    background: #f8f6f1;
+    font-family: 'Lucida Grande','Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3',Meiryo, メイリオ, sans-serif;
+}
+.navbar{
+  background: #fff;
+}
+.footer {
+  background-color: #202020;
+  text-align: center;
+}
+.invalid-feedback ~ .invalid-feedback {
+  display: none;
+}
+/* フッター */
+.ft_tel a:before {
+    font-family: "Font Awesome 5 Free";
+    content: '\f2a0';
+    font-weight: 900;
+    color: #fff;
+    font-size: 2.2rem;
+    margin-right: 0.2em;
+}
+.footer_content {
+  display: flex;
+  justify-content: center;
+}
+.business_hours {
+  color: #fff;
+  font-size: 13px;
+}
+a.tel_link.txt_tel {
+  color: #fff;
+}
+a.tel_link:hover {
+  color: #fff;
+  text-decoration: none;
+  opacity: .5;
+}
+a.tel_link.txt_tel {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+}
+footer * {
+  font-family: "游明朝", YuMincho, "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "HG明朝B", serif;
+}
+.footer_content_right {
+  margin-left: 15px;
+}
+.footer_logo_img img {
+  width: 70%;
+}
+.footer_logo_img {
+  text-align: end;
+}
+.copyright_text {
+  color: #fff;
+  font-size: 12px;
+}
+.footer_content {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+@media (max-width: 900px) {
+  .footer_logo_img {
+    text-align: center;
+  }
+    .footer_content {
+      flex-direction: column;
+  }
+    .business_hours {
+      text-align: left;
+  }
+  .footer_content_right {
+      margin: auto;
+  }
+}
+
+/*利用規約*/
+.kiyaku-content-area .wp-block-myblock-setting h2 {
+  font-size: 1rem;
+}

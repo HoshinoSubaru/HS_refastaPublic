@@ -1,0 +1,84 @@
+table {
+    width: 210mm;
+    height: 297mm;
+    box-sizing: border-box;
+    padding: 20mm;
+    border: 1px solid #555;
+    margin: auto;
+    page-break-after: always;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+tr,
+th,
+td {
+    box-sizing: border-box;
+    border: 1px solid #555;
+}
+.padding_side {
+    padding: 0 2mm;
+}
+.text_small {
+    font-size: 12px;
+}
+.bg_color {
+    background: #cecece;
+}
+.text_center {
+    text-align: center;
+}
+.text_right {
+    text-align: right;
+}
+.vertical {
+    writing-mode: tb-rl;
+}
+.border_none {
+    border: none;
+}
+/*************** pdf_products_detail.blade ***************/
+.company_name {
+    font-size: 30px;
+    padding: 3mm;
+}
+
+.products_identification th {
+    font-weight: normal;
+    text-align: left;
+}
+.products_identification th,
+.products_identification td {
+    font-size: 13px;
+    border: none;
+    border-bottom: 3px solid #555;
+}
+.purchase_item th {
+    word-break: keep-all;
+}
+.keep_all {
+    word-break: keep-all;
+}
+.height_tr {
+    /* height: 7mm; */
+    line-height: 1.1;
+}
+
+/*************** pdf_customer.blade ***************/
+.customer_input,
+.company_input {
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+}
+.identity_identification {
+    text-align: center;
+    background: #cecece;
+}
+.prefectures td {
+    border: none;
+    padding-right: 1mm;
+}
+.alphabet_text {
+    padding: 0mm 3mm;
+}
