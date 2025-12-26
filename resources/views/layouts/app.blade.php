@@ -78,7 +78,7 @@
                         </a>
                     @else
                         <a class="navbar-brand" href="/">
-                          <!-- <img alt="貴金属・宝石・ダイヤモンド・時計・ブランド買取のリファスタ" src="{{ env('IMG_FOLDER') }}/logo.png"> -->
+                          <!-- <img alt="貴金属・宝石・ダイヤモンド・時計・ブランド買取のリファスタ" src="https://kinkaimasu.jp/commonimg/delivery/logo.png"> -->
                             <img alt="貴金属・宝石・ダイヤモンド・時計・ブランド買取のリファスタ" src="https://kinkaimasu.jp/commonimg/delivery/logo.png">
                         </a>
                     @endif
@@ -112,7 +112,7 @@
 
     <footer class="footer mt-auto py-3">
       <div class="container">
-        <!-- <img src="{{ env('IMG_FOLDER') }}/footer_info.jpg"> -->
+        <!-- <img src="https://kinkaimasu.jp/commonimg/delivery/footer_info.jpg"> -->
         <div class="footer_content">
           <div class="footer_logo_img">
             <img alt="貴金属,宝石,ブランド買取のリファスタ" src="https://kinkaimasu.jp//commonimg/footer_new/logo.png">

@@ -8,7 +8,7 @@
                 <div class="kit_image">
                     <img
                             style="width: 150px;"
-                            src="{{ env('IMG_FOLDER') }}/kit_main/s_01.jpg"
+                            src="https://kinkaimasu.jp/commonimg/delivery/kit_main/s_01.jpg"
                             data-toggle="modal" data-target="#kit_s_modal"
                     />
                     <div class="text-center size_text">Sサイズ</div>
@@ -36,7 +36,7 @@
                 <div class="kit_image">
                     <img
                             style="width: 150px;"
-                            src="{{ env('IMG_FOLDER') }}/kit_main/m_01.jpg"
+                            src="https://kinkaimasu.jp/commonimg/delivery/kit_main/m_01.jpg"
                             data-toggle="modal" data-target="#kit_m_modal"
                     />
                 </div>
@@ -64,7 +64,7 @@
                 <div class="kit_image">
                     <img
                             style="width: 150px;"
-                            src="{{ env('IMG_FOLDER') }}/kit_main/l_01.jpg"
+                            src="https://kinkaimasu.jp/commonimg/delivery/kit_main/l_01.jpg"
                             data-toggle="modal" data-target="#kit_l_modal"
                     />
                 </div>
@@ -91,7 +91,7 @@
                       <div class="kit_image">
                         <img
                           style="width: 150px;"
-                          src="{{ env('IMG_FOLDER') }}/kit_main/d_01.jpg"
+                          src="https://kinkaimasu.jp/commonimg/delivery/kit_main/d_01.jpg"
                           data-toggle="modal" data-target="#kit_d_modal"
                         />
                       </div>
@@ -118,7 +118,7 @@
                 <div class="kit_image">
                     <img
                             style="width: 150px;"
-                            src="{{ env('IMG_FOLDER') }}/kit_main/k_01.jpg"
+                            src="https://kinkaimasu.jp/commonimg/delivery/kit_main/k_01.jpg"
                             data-toggle="modal" data-target="#kit_k_modal"
                     />
                 </div>

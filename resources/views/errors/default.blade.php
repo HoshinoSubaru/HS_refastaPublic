@@ -45,32 +45,32 @@
       </div>
       <div class="card">
         <div class="text-center card-body">
-          <img src="{{ env('IMG_FOLDER') }}/thanks/comment_img_01.jpg" alt="">
-          <img src="{{ env('IMG_FOLDER') }}/thanks/goods.jpg" alt="">
-          <img src="{{ env('IMG_FOLDER') }}/thanks/comment_img_02.jpg" alt="">
+          <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/comment_img_01.jpg" alt="">
+          <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/goods.jpg" alt="">
+          <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/comment_img_02.jpg" alt="">
           <div>
             ジュエリーからブランド品までさまざまなお品物をお買取しております。<br>
             お品物のジャンルが異なっていても各専門サイトからお申込みいただく必要はございません。<br>
             どのサイトからのお申込みでも「宝飾品・服飾品」を混同してお送り頂けます。
           </div>
-          <img src="{{ env('IMG_FOLDER') }}/thanks/comment_img_03.jpg" alt="">
+          <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/comment_img_03.jpg" alt="">
           <div>
             各専門サイトでは豊富な買取実績や取扱品目、取扱ブランド、<br>
             買取キャンペーンなどをご紹介しております。ぜひ一度ご覧くださいませ。
           </div>
           <div class="row">
             <a class="col-4" href="https://kinkaimasu.jp/" target="_blank">
-              <img src="{{ env('IMG_FOLDER') }}/thanks/page_link_01.jpg" alt="">
+              <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/page_link_01.jpg" alt="">
             </a>
             <a class="col-4" href="https://brandkaimasu.com/" target="_blank">
-              <img src="{{ env('IMG_FOLDER') }}/thanks/page_link_02.jpg" alt="">
+              <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/page_link_02.jpg" alt="">
             </a>
             <a class="col-4" href="https://diakaimasu.jp/" target="_blank">
-              <img src="{{ env('IMG_FOLDER') }}/thanks/page_link_03.jpg" alt="">
+              <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/page_link_03.jpg" alt="">
             </a>
 
             <a class="col-12" href="/campaign/" target="_blank">
-              <img src="{{ env('IMG_FOLDER') }}/thanks/campaign_link.jpg" alt="">
+              <img src="https://kinkaimasu.jp/commonimg/delivery/thanks/campaign_link.jpg" alt="">
             </a>
           </div>
         </div>
