@@ -53,7 +53,21 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
+        
+        'mysql_internet' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_INTERNET', '34.84.18.177'),
+            'port' => env('DB_PORT_INTERNET', '3306'),
+            'database' => env('DB_DATABASE_INTERNET', 'internet'),
+            'username' => env('DB_USERNAME_INTERNET', 'testssh'),
+            'password' => env('DB_PASSWORD_INTERNET', 'testssh'),
+            'unix_socket' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
         'mysql_mypage' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST_MYPAGE', '127.0.0.1'),
