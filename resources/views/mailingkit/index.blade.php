@@ -119,11 +119,11 @@
           ダイヤリング等はコチラ。箱付の長財布2つ程も収まります。
         </div>
         <div class="text-center row align-items-center justify-content-center">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sankou/s.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/s_01.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/s_02.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/s_03.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sub/s_04.png" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sankou/s.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/s_01.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/s_02.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/s_03.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sub/s_04.png" alt="">
         </div>
         <div class="alert alert-secondary">
           <div>全キットの付属品</div>
@@ -158,11 +158,11 @@
           靴箱が2つ程と、ミディアムサイズバッグが2点ほどが収まります。
         </div>
         <div class="text-center row align-items-center justify-content-center">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sankou/m.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/m_01.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/m_02.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/m_03.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sub/m_04.png" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sankou/m.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/m_01.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/m_02.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/m_03.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sub/m_04.png" alt="">
         </div>
         <div class="alert alert-secondary">
           <div>全キットの付属品</div>
@@ -197,11 +197,11 @@
           箱付きのロングブーツ1、2箱程と、厚手の洋服も数枚収まるサイズです。
         </div>
         <div class="text-center row align-items-center justify-content-center">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sankou/l.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/l_01.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/l_02.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/l_03.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sub/l_04.png" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sankou/l.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/l_01.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/l_02.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/l_03.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sub/l_04.png" alt="">
         </div>
         <div class="alert alert-secondary">
           <div>全キットの付属品</div>
@@ -236,7 +236,7 @@
           ※ヤマトDM便での配送となる為、時間指定は承り兼ねます。
         </div>
         <div class="text-center row align-items-center justify-content-center">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/d_01.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/d_01.jpg" alt="">
         </div>
         <div class="alert alert-secondary">
           <div>全キットの付属品</div>
@@ -271,9 +271,9 @@
           長財布2つ程であれば収まるサイズです。
         </div>
         <div class="text-center row align-items-center justify-content-center">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_sankou/k.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/k_01.jpg" alt="">
-          <img class="col" style="width: 200px;" src="{{ env('IMG_FOLDER') }}/kit_main/k_02.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_sankou/k.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/k_01.jpg" alt="">
+          <img class="col" style="width: 200px;" src="https://kinkaimasu.jp/commonimg/delivery/kit_main/k_02.jpg" alt="">
         </div>
         <div class="alert alert-secondary">
           <div>全キットの付属品</div>
@@ -351,7 +351,7 @@
 
 
               <div class="col-md-8">
-                <img src="{{ env('IMG_FOLDER') }}/brand/no_brand_pc.jpg" />
+                <img src="https://kinkaimasu.jp/commonimg/delivery/brand/no_brand_pc.jpg" />
               </div>
 
                 <div class="form-group row justify-content-center">
@@ -513,7 +513,7 @@
               <span class="badge badge-danger">必須</span>
               <div class="row align-items-center justify-content-center m-0">
                 <div class="">電話番号</div>
-                {{-- <img src="{{ env('IMG_FOLDER') }}/tel.png" style="width: 30px;"> --}}
+                {{-- <img src="https://kinkaimasu.jp/commonimg/delivery/tel.png" style="width: 30px;"> --}}
               </div>
             </label>
             <div class="col-md-8">
@@ -598,7 +598,7 @@
                     <div class="content">
                       {{-- <div class="row justify-content-md-center">
                         <div class="col-md-6"> --}}
-                          <img src="{{ env('IMG_FOLDER') }}/license.png" alt="">
+                          <img src="https://kinkaimasu.jp/commonimg/delivery/license.png" alt="">
                         {{-- </div>
                       </div> --}}
                       {{-- <div class="row justify-content-md-center form-group"> --}}
@@ -616,7 +616,7 @@
                           <span class="badge badge-danger m-0">必須</span>
                           <span>郵便番号</span>
                           <img
-                            src="{{ env('IMG_FOLDER') }}/zip.png"
+                            src="https://kinkaimasu.jp/commonimg/delivery/zip.png"
                             class="p-2"
                             style="width: 30px;"
                           >
@@ -1026,7 +1026,7 @@
                   </label>
                   <div class="col-md-8">
                     <select
-                      class="form-control"
+                      class="form-control{{ $errors->has($item_name) ? ' is-invalid' : '' }}"
                       name="{{ $item_name }}"
                       id="{{ $item_name }}"
                     >
@@ -1358,7 +1358,7 @@
             </div> --}}
 
 
-            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ env("GOOGLE_RECAPTHA_SITEKEY") }}"></div>
+            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="6LftmrEbAAAAAAwOZW8012QJiPceMjzc1z78zQla"></div>
 
 
             <div
@@ -1560,7 +1560,7 @@
                       ご協力ありがとうございました。
                     </div>
 
-                    <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ env("GOOGLE_RECAPTHA_SITEKEY") }}"></div>
+                    <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="6LftmrEbAAAAAAwOZW8012QJiPceMjzc1z78zQla"></div>
                     <div class="row">
                       <div
                               name=""
