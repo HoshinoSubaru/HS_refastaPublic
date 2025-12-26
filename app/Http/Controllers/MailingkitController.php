@@ -17,6 +17,7 @@ use App\Models\RefastaMypage2022\Delivery_form_token;
 use App\Mypage\ServiceUser;// todo 使用していないので整理する
 
 use Crypt;
+use Illuminate\Support\Facades\Log;
 
 class MailingkitController extends Controller
 {
@@ -468,6 +469,8 @@ $context = stream_context_create([
 
   public function submit(Request $request)
   {
+    Log::info('=== MailingkitController@submit 開始 ===');
+    Log::info('リクエストデータ:', $request->all());
 
     $aaaaaaaaaa = $_SERVER["HTTP_X_FORWARDED_HOST"] ?? "";
       if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -609,7 +612,7 @@ $context = stream_context_create([
       $kit_M = $request->kit_count_m;
       $kit_L = $request->kit_count_l;
       if($insurance=='なし'){
-        $insurance_kingaku = 'null';
+        $insurance_kingaku = '0';
       }
       if($time_select_none=='指定しない'){
         $date_select_hidden = '';
@@ -623,7 +626,7 @@ $context = stream_context_create([
       $kit_L = '0';
       $insurance = '';
       $time_select_none = '';
-      $insurance_kingaku = 'null';
+      $insurance_kingaku = '0';
       $date_select_hidden = '';
       $time_select_hidden = '';
     }
@@ -803,7 +806,9 @@ $context = stream_context_create([
     }
 
     //validation実行
+    Log::info('バリデーションルール:', $validate_rule);
     $this->validate($request,$validate_rule);
+    Log::info('バリデーション通過');
 
     // エラー検知が終わった後
 
@@ -1018,7 +1023,11 @@ $context = stream_context_create([
 
 
     //////////////////////DB保存//////////////////////
+    Log::info('DB保存開始');
+    Log::info('insurance_kingaku値:', ['insurance_kingaku' => $insurance_kingaku, 'type' => gettype($insurance_kingaku)]);
+
     // 現在のmailingkit同様、買取サーバーDBへ。モデル作って保存するだけ。
+    try {
     $Eoc_takuhai = Eoc_takuhai::insert([
       'brand_confirm' => $brand_confirm,
        'number_of_times' => $number_of_times,
@@ -1060,6 +1069,11 @@ $context = stream_context_create([
        'contract_at' => $request->contract_at,
        'ad_param' => $request->ad_param,
     ]);
+    Log::info('DB保存完了');
+    } catch (\Exception $e) {
+      Log::error('DB保存エラー:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+      throw $e;
+    }
 //////////////////////end DB保存//////////////////////
 
     $input_values = $request;
