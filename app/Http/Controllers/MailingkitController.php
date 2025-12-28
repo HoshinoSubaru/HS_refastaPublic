@@ -425,7 +425,12 @@ $context = stream_context_create([
 
 
     $holiday_url = "https://rifa.life/refastaProject/get_wp_posts/35043?block_id=40825";
-    $holiday_banner = file_get_contents($holiday_url);
+    try {
+        $holiday_banner = file_get_contents($holiday_url, false, $context);
+    } catch (\Exception $e) {
+        Log::error("休日バナー取得エラー: " . $e->getMessage());
+        $holiday_banner = ""; // デフォルト値
+    }
 
     if(isset($_GET["takuhaitest"])){
       $view_file = "mailingkit.test";
@@ -489,8 +494,21 @@ $context = stream_context_create([
           return redirect('/info');
       }
 
+      // Stream contextを作成
+      $context = stream_context_create([
+          'ssl' => [
+              'verify_peer'      => false,
+              'verify_peer_name' => false
+          ]
+      ]);
+
       $kaigai_url = "https://rifa.life/refastaProject/kaigaiiphanbetsu/{$ip}";
-      $kaigai_html = file_get_contents($kaigai_url);
+      try {
+          $kaigai_html = file_get_contents($kaigai_url, false, $context);
+      } catch (\Exception $e) {
+          Log::error("海外IP判定エラー: " . $e->getMessage());
+          $kaigai_html = "JP"; // デフォルト値
+      }
 
       if(
           ($kaigai_html !== "")
@@ -964,6 +982,10 @@ $context = stream_context_create([
         'content' => http_build_query(array(
           "text" => "【宅配申込】{$domain}{$ttl_type}/{$cv_device} {$datetime} {$speed_flag}\n" . $chat_txt,
         ), "", "&")
+      ),
+      'ssl' => array(
+        'verify_peer'      => false,
+        'verify_peer_name' => false
       )
     );
     $context = stream_context_create($options);
@@ -971,7 +993,7 @@ $context = stream_context_create([
     try{
       file_get_contents('https://rifa.life/refastaProject/pushGoogleChatSpace/' . $send_space , false, $context);
     }catch(\Exception $e){
-      // echo $e->getMessage();
+      Log::error("Google Chat通知エラー: " . $e->getMessage());
     }
 
 // ▼▼▼▼▼▼▼▼▼ n8n 追加コード ここから (cURL使用) ▼▼▼▼▼▼▼▼▼
@@ -1161,9 +1183,18 @@ $context = stream_context_create([
             "method"  => "POST",
             "header"  => implode("\r\n", $header),
             "content" => $data
+        ),
+        "ssl" => array(
+            "verify_peer"      => false,
+            "verify_peer_name" => false
         )
     );
-    return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
+    try {
+        return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
+    } catch (\Exception $e) {
+        Log::error("Decrypt API エラー: " . $e->getMessage());
+        return $val;
+    }
   }
 
   public function encrypt_mypage($val)
@@ -1186,9 +1217,18 @@ $context = stream_context_create([
             "method"  => "POST",
             "header"  => implode("\r\n", $header),
             "content" => $data
+        ),
+        "ssl" => array(
+            "verify_peer"      => false,
+            "verify_peer_name" => false
         )
     );
-    return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
+    try {
+        return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
+    } catch (\Exception $e) {
+        Log::error("Encrypt API エラー: " . $e->getMessage());
+        return $val;
+    }
   }
 
 }//end class
