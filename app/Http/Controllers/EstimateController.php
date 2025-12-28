@@ -51,6 +51,13 @@ class EstimateController extends Controller
 
 
         // 海外IPの判定
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
@@ -61,7 +68,13 @@ class EstimateController extends Controller
         }
         $ip = str_replace(" ", "", $ip);
         $kaigai_url = "https://rifa.life/refastaProject/kaigaiiphanbetsu/{$ip}";
-        $this->kaigai_html = file_get_contents($kaigai_url);
+
+        try {
+            $this->kaigai_html = file_get_contents($kaigai_url, false, $context);
+        } catch (\Exception $e) {
+            Log::error("海外IP判定エラー: " . $e->getMessage());
+            $this->kaigai_html = "JP"; // デフォルト値
+        }
 
 
     }
@@ -70,10 +83,22 @@ class EstimateController extends Controller
      */
     public function estimate(Request $request)
     {
+        // Stream contextを作成
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ]);
         
         //ご利用規約のインポート
         $kiyaku_url = "https://kinkaimasu.jp/kiyaku_text/kiyaku_for_rifa.php";
-        $kiyaku_html = file_get_contents($kiyaku_url);
+        try {
+            $kiyaku_html = file_get_contents($kiyaku_url, false, $context);
+        } catch (\Exception $e) {
+            Log::error("利用規約の取得に失敗: " . $e->getMessage());
+            $kiyaku_html = "利用規約の読み込みに失敗しました。";
+        }
         $data = array();
         $data["kiyaku_html"]=$kiyaku_html;
         $this->setParam();
@@ -88,6 +113,14 @@ class EstimateController extends Controller
      */
     public function estimate_update(Request $request)
     {
+        // Stream contextを作成
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
@@ -99,7 +132,12 @@ class EstimateController extends Controller
         $ip = str_replace(' ', '', $ip);
 
         $kaigai_url = "https://rifa.life/refastaProject/kaigaiiphanbetsu/{$ip}";
-        $kaigai_html = file_get_contents($kaigai_url);
+        try {
+            $kaigai_html = file_get_contents($kaigai_url, false, $context);
+        } catch (\Exception $e) {
+            Log::error("海外IP判定エラー: " . $e->getMessage());
+            $kaigai_html = "JP"; // デフォルト値
+        }
         Log::info("Estimate IPチェック: $ip / レスポンス: $kaigai_html");
 
         // メールドメインによる送信拒否（example.com 等）
