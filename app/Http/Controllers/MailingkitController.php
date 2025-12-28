@@ -1121,7 +1121,17 @@ $context = stream_context_create([
 
     $now = Carbon::now();
     $deliveryFormToken = Delivery_form_token::where('token', $token)->where('token_limit', '>=', $now)->first();
-    if ($deliveryFormToken === null) return false;
+    
+    // トークンが期限切れの場合、セッションにメッセージを設定
+    if ($deliveryFormToken === null) {
+      // トークンが存在するか確認（期限切れかどうかを判定）
+      $expiredToken = Delivery_form_token::where('token', $token)->first();
+      if ($expiredToken !== null) {
+        $request->session()->flash('token_expired_warning', 
+          'マイページからのリンクの有効期限が切れています。お手数ですが、フォームに情報を入力してお申し込みください。');
+      }
+      return false;
+    }
 
     $userProfile = User_profile::where('user_id', $deliveryFormToken->user_id)->first();
     if ($userProfile === null) return false;
