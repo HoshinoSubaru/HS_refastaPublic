@@ -44,9 +44,12 @@ class Shop_frontController extends Controller
 
         $ecc_id = htmlspecialchars($_POST["ecc_id"]);
 
+        $start_time = date("Y-m-d H:i:s");
+
         $insertArray = array(
             "send_id" => $send_id,
             "ecc_id" => $ecc_id,
+            "start_time" => $start_time,
         );
 
         $id = DB::table('shop_front_details')->insertGetId($insertArray);
