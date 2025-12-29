@@ -192,14 +192,6 @@ class MailingkitController extends Controller
     $three_days_later_all = "<span class='ok_time'>◎</span>";
     $three_days_later_12 = "<span class='ok_time'>◎</span>";  // 12〜15時
 
-    // 佐川API
-    // 前日の17時までの取り込みでOKの為、余裕をもって16時に締め切り
-    // 16時以降は、翌日不可。
-    if ($hours >= 16) {
-      $tomorroww_morning = "<span class='out_time'>×</span>";
-      $tomorroww_all = "<span class='out_time'>×</span>";
-    }
-
         /**
      * キット無し 2023GW
      */
@@ -276,7 +268,7 @@ class MailingkitController extends Controller
 
     // ★★★ 切り替え ★★★
     // テスト時：true  本番時：false
-    $is_test = false;
+    $is_test = true;
 
     $date = date("md");  // 月日のみ（例：1227, 0101）
     $basic_first_available_time_index = 1;
@@ -286,8 +278,8 @@ class MailingkitController extends Controller
     
     if ($is_test) {
         // ========== テスト日時設定 ==========
-        $hours = 11;                        // テスト時刻
-        $test_base_date = "2026-01-05";     // ← ここだけ変更すればOK
+        $hours = 16;                        // テスト時刻
+        $test_base_date = "2026-01-06";     // ← ここだけ変更すればOK
         $date = date("md", strtotime($test_base_date));  // 自動生成
         $current_wday = date("w", strtotime($test_base_date));  // テスト日付の曜日
         // =====================================
@@ -394,6 +386,16 @@ class MailingkitController extends Controller
         }
         
         $speed_first_available_time_index = $nenmatsu_speed_first_time_index;
+    }
+
+    // =========================================
+    // 通常期間の時間制御（キットなし/スピード）
+    // 佐川API：前日17時までの取り込みでOKの為、余裕をもって16時に締め切り
+    // ※年末年始期間中は上記の制御で既に×になっているため影響なし
+    // =========================================
+    if ($hours >= 16) {
+        $tomorroww_morning = "<span class='out_time'>×</span>";
+        $tomorroww_all = "<span class='out_time'>×</span>";
     }
 
     // =========================================
@@ -972,26 +974,26 @@ $context = stream_context_create([
     $send_opt = htmlspecialchars($request->send_opt ?? '', ENT_QUOTES, "UTF-8");
 
     // ▼▼▼ 佐川API テスト時コメントアウト ▼▼▼
-    if($send_opt != 'test'){
-      if ($type_selection == "スピードタイプ") {
-        try {
-          $this->send_sagawa_shuukairai(
-            $user_todou,
-            $user_sikutyouson,
-            $user_banti_only,
-            $user_building,
-            $user_name_kana,
-            $user_yuubinn,
-            $user_tel,
-            $user_mail,
-            $speed_box,
-            $date_and_time_hidden
-          );
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
-      }
-    }
+    // if($send_opt != 'test'){
+    //   if ($type_selection == "スピードタイプ") {
+    //     try {
+    //       $this->send_sagawa_shuukairai(
+    //         $user_todou,
+    //         $user_sikutyouson,
+    //         $user_banti_only,
+    //         $user_building,
+    //         $user_name_kana,
+    //         $user_yuubinn,
+    //         $user_tel,
+    //         $user_mail,
+    //         $speed_box,
+    //         $date_and_time_hidden
+    //       );
+    //     } catch (\Throwable $th) {
+    //       //throw $th;
+    //     }
+    //   }
+    // }
     // ▲▲▲ 佐川API テスト時コメントアウト ▲▲▲
 
     $chat_txt = str_replace("&","＆",$chat_txt);

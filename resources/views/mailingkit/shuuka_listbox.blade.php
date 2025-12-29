@@ -26,6 +26,12 @@
             aria-describedby="{{ $item_name }}HelpBlock"
         >
             <option value="">日時を選択してください。</option>
+            
+            {{-- =========================================
+                day[1]（当日）：通常期間のみ表示
+                ※年末年始期間中は非表示
+            ========================================= --}}
+            @if(!$is_nenmatsu_speed)
             @php( $day_i = 1 )
             @if($today_time[1] === "<span class='ok_time'>◎</span>")
                 @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
@@ -49,20 +55,49 @@
                     <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
                 @endif
             @endif
+            @endif
 
             {{-- =========================================
-                【年末年始対応】固定日付表示（翌日〜3日後より先に表示）
+                【年末年始対応】固定日付を起点として6日間表示
                 ※$is_nenmatsu_speed で自動判定
                 ※開始時間帯はControllerの $speed_first_available_time_index で制御
+                ※1日目は開始時間帯から、2日目以降は全時間帯
             ========================================= --}}
             @if($is_nenmatsu_speed)
-                {{-- 固定日付：開始時間帯から表示（動的） --}}
+                @php($wday_names = ["日", "月", "火", "水", "木", "金", "土"])
+                {{-- 年を動的に計算（12月なら翌年、1月以降なら今年） --}}
+                @php($fixed_year = (date('n') == 12) ? date('Y') + 1 : date('Y'))
+                @php($fixed_base_ts = strtotime("{$fixed_year}-{$nenmatsu_fixed_month_speed}-{$nenmatsu_fixed_day_speed}"))
+                
+                {{-- 1日目（固定日付）：開始時間帯から --}}
                 @for($time_i = $speed_first_available_time_index; $time_i <= 4; $time_i++)
                     @php($value = $nenmatsu_fixed_month_speed.'/'.$nenmatsu_fixed_day_speed.'('.$nenmatsu_fixed_wday_speed.') '.$sel[$time_i])
                     <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
                 @endfor
+                
+                {{-- 2日目〜6日目：全時間帯 --}}
+                @for($offset = 1; $offset <= 5; $offset++)
+                    @php($date_ts = strtotime("+{$offset} day", $fixed_base_ts))
+                    @php($m = date('n', $date_ts))
+                    @php($d = date('j', $date_ts))
+                    @php($w = $wday_names[date('w', $date_ts)])
+                    
+                    @php($value = $m.'/'.$d.'('.$w.') '.$sel[1])
+                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+                    @php($value = $m.'/'.$d.'('.$w.') '.$sel[2])
+                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+                    @php($value = $m.'/'.$d.'('.$w.') '.$sel[3])
+                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+                    @php($value = $m.'/'.$d.'('.$w.') '.$sel[4])
+                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+                @endfor
             @endif
 
+            {{-- =========================================
+                day[2]〜day[4]（翌日〜3日後）：通常期間のみ表示
+                ※年末年始期間中は固定日付起点の6日間で表示するため非表示
+            ========================================= --}}
+            @if(!$is_nenmatsu_speed)
             @php( $day_i = 2 )
             @if($tomorroww_morning === "<span class='ok_time'>◎</span>")
                 @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
@@ -123,6 +158,7 @@
                 @endif
             @endif
 
+            {{-- day[5]〜day[7] --}}
             @php( $day_i = 5 )
             @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
             <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
@@ -163,6 +199,7 @@
             @if($sel[5] !== "")
                 @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
                 <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @endif
             @endif
 
         </select>
