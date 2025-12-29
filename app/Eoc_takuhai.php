@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eoc_takuhai extends Model
 {
-  protected $connection = "mysql_internet";
   protected $table = "Eoc_takuhai";
 
   const CREATED_AT = 'created_at';
