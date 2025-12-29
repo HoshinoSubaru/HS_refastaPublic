@@ -462,7 +462,7 @@
             </div>
             
             <div class="submit_btn mt-3" id="submit_btn_display">
-                <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ env("GOOGLE_RECAPTHA_SITEKEY") }}" ></div>
+            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ config('services.google_recaptcha.site_key') }}"></div>
                 <button type="submit" id="submitBtn" class="btn btn-primary disabled" disabled>入力内容を送信する</button>
             </div>
             <!-- インゴット情報 modal -->
