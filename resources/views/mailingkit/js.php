@@ -467,36 +467,23 @@ insurance_select()
 need_kit_select()
 
 function onSubmit(recaptcha) {
-      console.log('=== onSubmit called ===');
-      console.log('recaptcha token:', recaptcha);
-      if (recaptcha !== ''){
-          // reCAPTHAによるチェックをしたあとは送信ボタンを押せるようにする
-          console.log('recaptcha成功 - ボタンを有効化');
-          jQuery('.submit_btn').removeAttr('disabled');
-      } else {
-          console.log('recaptcha失敗 - recaptchaが空');
-      }
+    if (recaptcha !== ''){
+        // reCAPTHAによるチェックをしたあとは送信ボタンを押せるようにする
+        jQuery('.submit_btn').removeAttr('disabled');
+    }
 }
 
 $(".submit_btn").click(function(){
-    console.log('=== submit_btn clicked ===');
-    console.log('disabled属性:', $(this).attr("disabled"));
-    console.log('clickedクラス:', $(this).hasClass("clicked"));
-    
     if($(this).attr("disabled")){
-        console.log('ボタンがdisabledのため送信中止');
         return false;
     }
     if($(this).hasClass("clicked")){
-        console.log('既にクリック済みのため送信中止');
         return false;
     }
-    console.log('フォーム送信開始');
     $('#hp_field').val('');
     $(".submit_btn").addClass("clicked");
     $(".submit_btn").text("送信中")
     $("#delivery_form").submit();
-    console.log('フォーム送信実行');
 })
 
 
