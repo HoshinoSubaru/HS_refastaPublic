@@ -1366,7 +1366,7 @@
             </div> --}}
 
 
-            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="6LftmrEbAAAAAAwOZW8012QJiPceMjzc1z78zQla"></div>
+            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ config('services.google_recaptcha.site_key') }}"></div>
 
 
             <div
@@ -1567,8 +1567,7 @@
                     <div class="alert alert-light" role="alert">
                       ご協力ありがとうございました。
                     </div>
-
-                    <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="6LftmrEbAAAAAAwOZW8012QJiPceMjzc1z78zQla"></div>
+            <div class="g-recaptcha" data-callback="onSubmit" data-sitekey="{{ config('services.google_recaptcha.site_key') }}"></div>
                     <div class="row">
                       <div
                               name=""
