@@ -1098,19 +1098,37 @@ $context = stream_context_create([
     }
 //////////////////////end DB保存//////////////////////
 
-    $input_values = $request;
-    $to = env("MAIL_FROM_ADDRESS");
-    $title = $store_title;
-    $type = 'mailingkit';
-    $send_type = 'shop';
-    Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    // 店舗側へのメール送信
+    try {
+        $input_values = $request;
+        $to = env("MAIL_FROM_ADDRESS");
+        $title = $store_title;
+        $type = 'mailingkit';
+        $send_type = 'shop';
+        Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    } catch (\Exception $e) {
+        Log::error('宅配申込メール送信エラー（店舗側）', [
+            'to' => $to ?? 'unknown',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
 
-    $input_values = $request;
-    $to = $user_mail;
-    $title = 'リファスタです【宅配買取申込完了】';
-    $type = 'mailingkit';
-    $send_type = 'visitor';
-    Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    // お客様側へのメール送信
+    try {
+        $input_values = $request;
+        $to = $user_mail;
+        $title = 'リファスタです【宅配買取申込完了】';
+        $type = 'mailingkit';
+        $send_type = 'visitor';
+        Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    } catch (\Exception $e) {
+        Log::error('宅配申込メール送信エラー（お客様側）', [
+            'to' => $to ?? 'unknown',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
 
     // 処理エラーが無ければ完了画面の表示
     // ブラウザリロード等での二重送信防止

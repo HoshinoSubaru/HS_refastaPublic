@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      @if($_POST["need_kit"] == "希望しない")
+      @if($inputs["need_kit"] == "希望しない")
       <div class="alert alert-warning">
         <div class="text-center">
       		<a href="https://kinkaimasu.jp/choice/kaitori.pdf" target="_bank">
@@ -48,7 +48,7 @@
                 買取不可ブランド
               </div>
               <div class="col-sm-8">
-                @if($_POST["brand_confirm"])
+                @if($inputs["brand_confirm"] ?? false)
                   同意する
                 @else
                   同意しない
@@ -62,7 +62,7 @@
               ご利用回数
             </div>
             <div class="col-sm-8">
-              {{ $_POST["number_of_times"] }}
+              {{ $inputs["number_of_times"] }}
             </div>
           </div>
 
@@ -71,17 +71,17 @@
               梱包キット
             </div>
             <div class="col-sm-8">
-              {{ $_POST["need_kit"] }}
+              {{ $inputs["need_kit"] }}
             </div>
           </div>
 
-          @if($_POST["need_kit"] == "希望しない")
+          @if($inputs["need_kit"] == "希望しない")
             <div class="row">
               <div class="col-sm-4">
                 発送予定箱数
               </div>
               <div class="col-sm-8">
-                {{ $_POST["speed_box"] }}個
+                {{ $inputs["speed_box"] }}個
               </div>
             </div>
             <div class="row">
@@ -89,7 +89,7 @@
                 集荷希望日時
               </div>
               <div class="col-sm-8">
-                {{ $_POST["date_and_time_hidden"] }}
+                {{ $inputs["date_and_time_hidden"] }}
               </div>
             </div>
           @else
@@ -98,10 +98,10 @@
                 梱包キットの詳細
               </div>
               <div class="col-sm-8">
-                ダンボールS：{{ $_POST["kit_count_s"] }}個<br>
-                ダンボールM：{{ $_POST["kit_count_m"] }}個<br>
-                ダンボールL：{{ $_POST["kit_count_l"] }}個<br>
-                クッション封筒：{{ $_POST["kit_count_k"] }}個
+                ダンボールS：{{ $inputs["kit_count_s"] }}個<br>
+                ダンボールM：{{ $inputs["kit_count_m"] }}個<br>
+                ダンボールL：{{ $inputs["kit_count_l"] }}個<br>
+                クッション封筒：{{ $inputs["kit_count_k"] }}個
               </div>
             </div>
             <div class="row">
@@ -109,16 +109,16 @@
                 配送日時指定
               </div>
               <div class="col-sm-8">
-                {{ $_POST["time_select_none"] }}
+                {{ $inputs["time_select_none"] }}
               </div>
             </div>
-            @if($_POST["time_select_none"] == "指定する")
+            @if($inputs["time_select_none"] == "指定する")
               <div class="row">
                 <div class="col-sm-4">
                   配送希望日時
                 </div>
                 <div class="col-sm-8">
-                  {{ $_POST["time_select_hidden"] }}
+                  {{ $inputs["time_select_hidden"] }}
                 </div>
               </div>
             @endif
@@ -127,20 +127,20 @@
                 配送補償
               </div>
               <div class="col-sm-8">
-                @if($_POST["insurance"] == "あり")
+                @if($inputs["insurance"] == "あり")
                   30万円以上(日時指定無効)
                 @else
                   30万円未満
                 @endif
               </div>
             </div>
-            @if($_POST["insurance"] == "あり")
+            @if($inputs["insurance"] == "あり")
               <div class="row">
                 <div class="col-sm-4">
                   配送補償対象金額
                 </div>
                 <div class="col-sm-8">
-                  {{ $_POST["insurance_kingaku"] }}
+                  {{ $inputs["insurance_kingaku"] }}
                 </div>
               </div>
             @endif
@@ -151,7 +151,7 @@
               お名前
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_name"] }}
+              {{ $inputs["user_name"] }}
             </div>
           </div>
 
@@ -160,7 +160,7 @@
               フリガナ
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_name_kana"] }}
+              {{ $inputs["user_name_kana"] }}
             </div>
           </div>
 
@@ -169,7 +169,7 @@
               電話番号
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_tel"] }}
+              {{ $inputs["user_tel"] }}
             </div>
           </div>
 
@@ -178,7 +178,7 @@
               メールアドレス
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_mail"] }}
+              {{ $inputs["user_mail"] }}
             </div>
           </div>
 
@@ -187,7 +187,7 @@
               郵便番号
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_yuubinn"] }}
+              {{ $inputs["user_yuubinn"] }}
             </div>
           </div>
 
@@ -196,7 +196,7 @@
               都道府県
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_todou"] }}
+              {{ $inputs["user_todou"] }}
             </div>
           </div>
 
@@ -205,7 +205,7 @@
               市区郡
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_sikutyouson"] }}
+              {{ $inputs["user_sikutyouson"] }}
             </div>
           </div>
 
@@ -214,7 +214,7 @@
               町村名・番地
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_banti"] }}
+              {{ $inputs["user_banti"] }}
             </div>
           </div>
 
@@ -223,7 +223,7 @@
               建物名
             </div>
             <div class="col-sm-8">
-              {{ $_POST["user_building"] }}
+              {{ $inputs["user_building"] }}
             </div>
           </div>
 
@@ -232,7 +232,7 @@
               希望連絡方法
             </div>
             <div class="col-sm-8">
-              {{ $_POST["tel_mail_line"] }}
+              {{ $inputs["tel_mail_line"] }}
             </div>
           </div>
 
@@ -241,7 +241,7 @@
               事前査定
             </div>
             <div class="col-sm-8">
-              {{ $_POST["line_satei"] }}
+              {{ $inputs["line_satei"] }}
             </div>
           </div>
 
@@ -250,7 +250,7 @@
               備考欄
             </div>
             <div class="col-sm-8">
-              {{ $_POST["bikou"] }}
+              {{ $inputs["bikou"] }}
             </div>
           </div>
 
@@ -259,7 +259,7 @@
               利用規約・プライバシーポリシー
             </div>
             <div class="col-sm-8">
-              @if($_POST["kiyaku_check"])
+              @if($inputs["kiyaku_check"] ?? false)
                 同意する。
               @else
                 同意しない。
@@ -276,7 +276,7 @@
         </strong>など。
       </div>
 
-      @if($_POST["need_kit"] == "希望しない")
+      @if($inputs["need_kit"] == "希望しない")
       <div class="alert alert-info">
     		弊社にて集荷手続き完了後、メールにてご案内をさせていただきます。<br>
     		確認メールが未着の方は、ご案内のメールも未着の可能性がございます。
