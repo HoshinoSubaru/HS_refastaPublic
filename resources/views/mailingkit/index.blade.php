@@ -8,6 +8,24 @@
 @endsection
 
 @section('content')
+
+{{-- ▼▼▼ デバッグ用Console.log ▼▼▼ --}}
+@if(isset($debug_is_test) && $debug_is_test)
+<script>
+console.log('========================================');
+console.log('【デバッグモード】年末年始テスト中');
+console.log('========================================');
+console.log('テスト日付: {{ $debug_date }}');
+console.log('テスト時刻: {{ $debug_hours }}時');
+console.log('年末年始モード(is_nenmatsu_speed): {{ $is_nenmatsu_speed ? "true" : "false" }}');
+console.log('年末年始モード(is_nenmatsu_basic): {{ $is_nenmatsu_basic ? "true" : "false" }}');
+console.log('リスト日付(キットなし): {{ $nenmatsu_fixed_month_speed }}/{{ $nenmatsu_fixed_day_speed }}({{ $nenmatsu_fixed_wday_speed }}) 開始時間帯: {{ $speed_first_available_time_index }}');
+console.log('リスト日付(キットあり): {{ $nenmatsu_fixed_month_basic }}/{{ $nenmatsu_fixed_day_basic }}({{ $nenmatsu_fixed_wday_basic }}) 開始時間帯: {{ $basic_first_available_time_index }}');
+console.log('========================================');
+</script>
+@endif
+{{-- ▲▲▲ デバッグ用Console.log ▲▲▲ --}}
+
 {{-- <div class="5days-banner sp_none" style="width: 900px;margin: 0px auto 20px; max-width: 83%;">
   <img src="https://rifa.life/refasta_wordpress/wp-content/uploads/2021/12/form_banner.jpg" alt="5days_banner" width="900px">
 </div>

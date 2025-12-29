@@ -281,12 +281,17 @@ class MailingkitController extends Controller
     $date = date("md");  // 月日のみ（例：1227, 0101）
     $basic_first_available_time_index = 1;
 
+    // 曜日判定用（テスト時はテスト日付の曜日を使用）
+    $current_wday = date('w');
+    
     if ($is_test) {
-        $hours = 12;
-        $date = "1227";  // 月日のみでテスト
+        // ========== テスト日時設定 ==========
+        $hours = 11;                        // テスト時刻
+        $test_base_date = "2026-01-05";     // ← ここだけ変更すればOK
+        $date = date("md", strtotime($test_base_date));  // 自動生成
+        $current_wday = date("w", strtotime($test_base_date));  // テスト日付の曜日
+        // =====================================
 
-        // 日付配列を12/27基準で再生成
-        $test_base_date = date("Y") . "-12-27";  // 現在の年を自動取得
         $month[1] = date("n", strtotime($test_base_date));
         $day[1] = date("j", strtotime($test_base_date));
         $wday[1] = $wday_array[date("w", strtotime($test_base_date))];
@@ -299,99 +304,115 @@ class MailingkitController extends Controller
         }
     }
 
-    // 年末年始制御（月日のみで判定 → 毎年自動対応）
-    if ($date == "1227" && $hours >= 12) {
-        for ($stop_i = 0; $stop_i < 10; $stop_i++) {
+    // =========================================
+    // 【年末年始対応】集荷/配送指定開始日の日付設定 ★毎年変更★
+    // ※年末年始以降は $is_nenmatsu_speed が自動的に false になるため、
+    //   特に変更は不要です（日付で自動判定）
+    // =========================================
+    // キットあり（ベーシック）配送指定開始日設定: $basic_first_available_time_index=4の場合は16~18時から
+      $nenmatsu_fixed_month_basic = 1;    // 月
+      $nenmatsu_fixed_day_basic = 7;      // 日
+      $nenmatsu_fixed_wday_basic = "水";  // 曜日
+      $nenmatsu_basic_first_time_index = 4; // 開始時間帯: 4=16~18時から
+
+    // キットなし（スピード）集荷指定開始日設定: $speed_first_available_time_index=3の場合は15~18時から
+      $nenmatsu_fixed_month_speed = 1;    // 月
+      $nenmatsu_fixed_day_speed = 6;      // 日
+      $nenmatsu_fixed_wday_speed = "火";  // 曜日
+      $nenmatsu_speed_first_time_index = 3; // 開始時間帯: 3=15~18時から
+    
+    // =========================================
+    // 年末年始ベーシック制御（キットあり）★毎年変更★
+    // ※制御日時は店休日ではない
+    // =========================================
+    // 年末年始判定 -- 制御日時（必ず配送指定可能開始日の"前日迄"）と開始日時
+      $nenmatsu_basic_dates = ["1228", "1229", "1230", "1231", "0101", "0102", "0103", "0104", "0105", "0106"]; 
+      $is_nenmatsu_basic = ($date == "1227" && $hours >= 12) || in_array($date, $nenmatsu_basic_dates); 
+    
+    // 年末年始期間中は開始時間帯を設定＆固定日付までの日数分を×にする
+    if ($is_nenmatsu_basic) {
+        $basic_first_available_time_index = $nenmatsu_basic_first_time_index;
+        
+        // 今日から固定日付までの日数を自動計算
+        $today_ts_basic = $is_test ? strtotime($test_base_date) : strtotime('today');
+        $fixed_year_basic = ($nenmatsu_fixed_month_basic == 1 && date('n', $today_ts_basic) != 1) 
+            ? date('Y', $today_ts_basic) + 1 
+            : date('Y', $today_ts_basic);
+        $fixed_date_ts_basic = strtotime("{$fixed_year_basic}-{$nenmatsu_fixed_month_basic}-{$nenmatsu_fixed_day_basic}");
+        
+        // 固定日付までの日数（固定日付自体は選択可能なので-1）
+        $days_diff_basic = floor(($fixed_date_ts_basic - $today_ts_basic) / 86400) - 1;
+        
+        // その日数分を×にする
+        for ($stop_i = 0; $stop_i < $days_diff_basic; $stop_i++) {
             $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
         }
-        $basic_first_available_time_index = 4;
     }
-    if ($date == "1228") {
-        for ($stop_i = 0; $stop_i < 9; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
+
+    // =========================================
+    // 年末年始スピード制御（キット無し）★毎年変更★
+    // 12/27 12:00以降〜1/5　NG指定 → 1/6～は上記の日付以降から選択可能
+    // ※制御日時は店休日ではない
+    // =========================================
+    // 年末年始判定 -- 制御日時（必ず集荷指定可能開始日の"前々日迄"）と開始日時 --★毎年変更★
+      $speed_first_available_time_index = 1;
+      $nenmatsu_speed_dates = ["1228", "1229", "1230", "1231", "0101", "0102", "0103", "0104", "0105"];
+      $is_nenmatsu_speed = ($date == "1227" && $hours >= 12) || in_array($date, $nenmatsu_speed_dates);
+
+    // =========================================
+    // 【年末年始】キットなし（スピード）固定日付以前の日付を非表示
+    // ※固定日付（1/6）以前の翌日〜3日後のみ×にする
+    // ※固定日付より後（1/7以降）は通常通り選択可能
+    // =========================================
+    if ($is_nenmatsu_speed) {
+        // テストモードの場合はテスト日付、通常は今日を基準
+        $today_ts = $is_test ? strtotime($test_base_date) : strtotime('today');
+        
+        // 固定日付のタイムスタンプを計算（1月は翌年、ただし今日が1月なら今年）
+        $fixed_year = ($nenmatsu_fixed_month_speed == 1 && date('n', $today_ts) != 1) 
+            ? date('Y', $today_ts) + 1 
+            : date('Y', $today_ts);
+        $fixed_date_ts = strtotime("{$fixed_year}-{$nenmatsu_fixed_month_speed}-{$nenmatsu_fixed_day_speed}");
+        
+        // 翌日が固定日付以前なら×（固定日付と同日も×にして、固定日付で15時以降のみ表示）
+        if (strtotime('+1 day', $today_ts) <= $fixed_date_ts) {
+            $tomorroww_morning = "<span class='out_time'>×</span>";
+            $tomorroww_all = "<span class='out_time'>×</span>";
+            $tomorroww_12 = "<span class='out_time'>×</span>";
         }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "1229") {
-        for ($stop_i = 0; $stop_i < 8; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
+        // 2日後が固定日付以前なら×
+        if (strtotime('+2 day', $today_ts) <= $fixed_date_ts) {
+            $two_days_later_morning = "<span class='out_time'>×</span>";
+            $two_days_later_all = "<span class='out_time'>×</span>";
+            $two_days_later_12 = "<span class='out_time'>×</span>";
         }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "1230") {
-        for ($stop_i = 0; $stop_i < 7; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
+        // 3日後が固定日付以前なら×
+        if (strtotime('+3 day', $today_ts) <= $fixed_date_ts) {
+            $three_days_later_morning = "<span class='out_time'>×</span>";
+            $three_days_later_all = "<span class='out_time'>×</span>";
+            $three_days_later_12 = "<span class='out_time'>×</span>";
         }
-        $basic_first_available_time_index = 4;
+        
+        $speed_first_available_time_index = $nenmatsu_speed_first_time_index;
     }
-    if ($date == "1231") {
-        for ($stop_i = 0; $stop_i < 6; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
-        }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "0101") {
-        for ($stop_i = 0; $stop_i < 5; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
-        }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "0102") {
-        for ($stop_i = 0; $stop_i < 4; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
-        }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "0103") {
-        for ($stop_i = 0; $stop_i < 3; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
-        }
-        $basic_first_available_time_index = 4;
-    }
-    if ($date == "0104") {
-        for ($stop_i = 0; $stop_i < 2; $stop_i++) {
-            $basic_all_list[$stop_i] = "<span class='out_time'>×</span>";
-        }
-        $basic_first_available_time_index = 4;
-    }
+
+    // =========================================
+    // 通常期間の時間/曜日制御（キットあり/ベーシック）
+    // ※年末年始期間も含め常に適用される
+    // =========================================
     // １２時以降
     if($hours >= 12){
       // 翌日全てアウト
       $basic_all_list[0] = "<span class='out_time'>×</span>";
       //土曜日 翌々日がアウト
-      if(date('w')==6){
+      if($current_wday == 6){
         $basic_all_list[1] = "<span class='out_time'>×</span>";
       }
     }
     //　日曜日
     // いつでも翌日アウト
-    if(date('w')==0){
+    if($current_wday == 0){
       $basic_all_list[0] = "<span class='out_time'>×</span>";
-    }
-
-
-    // =========================================
-    // 年末年始スピード制御（キット無し）
-    // 12/27 12:00以降〜1/4 → 1/6 15~18時から
-    // =========================================
-    $speed_first_available_time_index = 1;
-    $nenmatsu_speed_dates = ["1228", "1229", "1230", "1231", "0101", "0102", "0103", "0104"];
-
-    // テスト時は $date と $hours は既に上で設定済み
-    $is_nenmatsu_speed = ($date == "1227" && $hours >= 12) || in_array($date, $nenmatsu_speed_dates);
-
-    if ($is_nenmatsu_speed) {
-        // 翌日〜3日後を全て×
-        $tomorroww_morning = "<span class='out_time'>×</span>";
-        $tomorroww_all = "<span class='out_time'>×</span>";
-        $tomorroww_12 = "<span class='out_time'>×</span>";
-        $two_days_later_morning = "<span class='out_time'>×</span>";
-        $two_days_later_all = "<span class='out_time'>×</span>";
-        $two_days_later_12 = "<span class='out_time'>×</span>";
-        $three_days_later_morning = "<span class='out_time'>×</span>";
-        $three_days_later_all = "<span class='out_time'>×</span>";
-        $three_days_later_12 = "<span class='out_time'>×</span>";
-        $speed_first_available_time_index = 3; // 15~18時
     }
 
 
@@ -469,6 +490,18 @@ $context = stream_context_create([
       "basic_first_available_time_index" => $basic_first_available_time_index,
       "speed_first_available_time_index" => $speed_first_available_time_index,
       "is_nenmatsu_speed" => $is_nenmatsu_speed,
+      "is_nenmatsu_basic" => $is_nenmatsu_basic,
+      // 【年末年始対応】固定日付変数
+      "nenmatsu_fixed_month_speed" => $nenmatsu_fixed_month_speed,
+      "nenmatsu_fixed_day_speed" => $nenmatsu_fixed_day_speed,
+      "nenmatsu_fixed_wday_speed" => $nenmatsu_fixed_wday_speed,
+      "nenmatsu_fixed_month_basic" => $nenmatsu_fixed_month_basic,
+      "nenmatsu_fixed_day_basic" => $nenmatsu_fixed_day_basic,
+      "nenmatsu_fixed_wday_basic" => $nenmatsu_fixed_wday_basic,
+      // デバッグ用
+      "debug_is_test" => $is_test,
+      "debug_date" => $date,
+      "debug_hours" => $hours,
     ]);
   }
 
@@ -938,6 +971,7 @@ $context = stream_context_create([
     // テスト送信パラメータがあったら、APIを発射しない
     $send_opt = htmlspecialchars($request->send_opt ?? '', ENT_QUOTES, "UTF-8");
 
+    // ▼▼▼ 佐川API テスト時コメントアウト ▼▼▼
     if($send_opt != 'test'){
       if ($type_selection == "スピードタイプ") {
         try {
@@ -958,6 +992,7 @@ $context = stream_context_create([
         }
       }
     }
+    // ▲▲▲ 佐川API テスト時コメントアウト ▲▲▲
 
     $chat_txt = str_replace("&","＆",$chat_txt);
     $chat_text_body = "[info][title]{$stamp}【宅配申込】{$domain}{$ttl_type}/{$cv_device} {$datetime} {$speed_flag}[/title]";
@@ -1098,6 +1133,7 @@ $context = stream_context_create([
     }
 //////////////////////end DB保存//////////////////////
 
+    // 店舗側へのメール送信
     $input_values = $request;
     $to = env("MAIL_FROM_ADDRESS");
     $title = $store_title;
@@ -1105,6 +1141,7 @@ $context = stream_context_create([
     $send_type = 'shop';
     Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
 
+    // お客様側へのメール送信
     $input_values = $request;
     $to = $user_mail;
     $title = 'リファスタです【宅配買取申込完了】';

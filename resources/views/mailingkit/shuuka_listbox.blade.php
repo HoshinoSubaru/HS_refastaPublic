@@ -50,6 +50,19 @@
                 @endif
             @endif
 
+            {{-- =========================================
+                【年末年始対応】固定日付表示（翌日〜3日後より先に表示）
+                ※$is_nenmatsu_speed で自動判定
+                ※開始時間帯はControllerの $speed_first_available_time_index で制御
+            ========================================= --}}
+            @if($is_nenmatsu_speed)
+                {{-- 固定日付：開始時間帯から表示（動的） --}}
+                @for($time_i = $speed_first_available_time_index; $time_i <= 4; $time_i++)
+                    @php($value = $nenmatsu_fixed_month_speed.'/'.$nenmatsu_fixed_day_speed.'('.$nenmatsu_fixed_wday_speed.') '.$sel[$time_i])
+                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+                @endfor
+            @endif
+
             @php( $day_i = 2 )
             @if($tomorroww_morning === "<span class='ok_time'>◎</span>")
                 @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
@@ -110,70 +123,46 @@
                 @endif
             @endif
 
+            @php( $day_i = 5 )
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @if($sel[5] !== "")
+                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
+                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @endif
 
-            @if(!$is_nenmatsu_speed)
-                @php( $day_i = 5 )
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
+            @php( $day_i = 6 )
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @if($sel[5] !== "")
+                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
                 <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @if($sel[5] !== "")
-                    @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
-                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @endif
+            @endif
 
-                @php( $day_i = 6 )
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
+            @php( $day_i = 7 )
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
+            <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
+            @if($sel[5] !== "")
+                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
                 <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @if($sel[5] !== "")
-                    @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
-                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @endif
-
-                @php( $day_i = 7 )
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
-                <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @if($sel[5] !== "")
-                    @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[5])
-                    <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                @endif
-            @else
-                {{-- 年末年始期間：1/6 15~18時から --}}
-                @for($day_i = 11; $day_i <= 14; $day_i++)
-                    @if($day_i == 11)
-                        {{-- 1/6：15~18時から --}}
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                    @else
-                        {{-- 1/7以降：全時間帯 --}}
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[1])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[2])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[3])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                        @php($value = $month[$day_i].'/'.$day[$day_i].'('.$wday[$day_i].') '.$sel[4])
-                        <option value="{{ $value }}" @if($value === old($item_name)) selected @endif>{{ $value }}</option>
-                    @endif
-                @endfor
             @endif
 
         </select>
