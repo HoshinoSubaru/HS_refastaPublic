@@ -120,7 +120,25 @@ class RefiningInfoController extends Controller
        // $ingotDetails が配列であることを確認する
         if (!is_array($ingotDetails)) {
             $ingotDetails = [];
-        } 
+        }
+        
+        // ingotDetails のバリデーション: null や不正なデータをフィルタリング
+        $ingotDetails = array_filter($ingotDetails, function($detail) {
+            return is_array($detail) && !empty($detail['_type']);
+        });
+        
+        // バリデーション: 有効なデータが1つもない場合はエラー
+        if (empty($ingotDetails)) {
+            \Log::warning('精錬加工申込：ingotDetails が空または不正', [
+                'ingotDetailsJSON' => $ingotDetailsJSON,
+                'email' => $request->input('email'),
+            ]);
+            return back()->withErrors(['ingot_details' => 'インゴット詳細のデータがありません。もう一度入力してください。'])->withInput();
+        }
+        
+        // インデックスをリセット（配列のキーを0から連番にする）
+        $ingotDetails = array_values($ingotDetails);
+        
         // データが存在する場合の処理
         foreach ($ingotDetails as $detail) {
             if (empty($detail['_type'])){

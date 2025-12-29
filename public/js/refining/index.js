@@ -34,12 +34,54 @@ window.onload = function(){
             event.preventDefault(); // フォームの送信をキャンセル
         }
 
-        if (!document.getElementById('ingotDetailsInput').value.trim()) {
+        const ingotDetailsValue = document.getElementById('ingotDetailsInput').value.trim();
+        
+        // ingotDetails が空、または [null] の場合はエラー
+        if (!ingotDetailsValue || ingotDetailsValue === '[null]' || ingotDetailsValue === '[]') {
             alert('インゴット詳細のデータがありません。詳しく内容を入力してください。');
             event.preventDefault(); // フォームの送信をキャンセルする
             $('html, body').animate({
                 scrollTop: 0
             }, 'slow');
+            return false;
+        }
+        
+        // JSON パースしてバリデーション
+        try {
+            const parsedDetails = JSON.parse(ingotDetailsValue);
+            if (!Array.isArray(parsedDetails) || parsedDetails.length === 0) {
+                alert('インゴット詳細のデータがありません。詳しく内容を入力してください。');
+                event.preventDefault();
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                return false;
+            }
+            
+            // 配列内に null や不正なデータがないかチェック
+            let hasValidData = false;
+            for (let i = 0; i < parsedDetails.length; i++) {
+                if (parsedDetails[i] && parsedDetails[i]._type) {
+                    hasValidData = true;
+                    break;
+                }
+            }
+            
+            if (!hasValidData) {
+                alert('インゴット詳細のデータがありません。詳しく内容を入力してください。');
+                event.preventDefault();
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+                return false;
+            }
+        } catch (e) {
+            alert('インゴット詳細のデータが不正です。もう一度入力してください。');
+            event.preventDefault();
+            $('html, body').animate({
+                scrollTop: 0
+            }, 'slow');
+            return false;
         }
         
     });
