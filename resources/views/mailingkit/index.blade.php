@@ -334,7 +334,7 @@
               role="form"
               method="POST"
               id="delivery_form"
-              action="{{ env('REQ_DIR') }}/thanks"
+              action="https://kinkaimasu.jp/delivery/thanks"
 {{--              class="needs-validation" --}}
               novalidate
       >
