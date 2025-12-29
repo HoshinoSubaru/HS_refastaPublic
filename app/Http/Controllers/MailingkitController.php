@@ -425,12 +425,7 @@ $context = stream_context_create([
 
 
     $holiday_url = "https://rifa.life/refastaProject/get_wp_posts/35043?block_id=40825";
-    try {
-        $holiday_banner = file_get_contents($holiday_url, false, $context);
-    } catch (\Exception $e) {
-        Log::error("休日バナー取得エラー: " . $e->getMessage());
-        $holiday_banner = ""; // デフォルト値
-    }
+    $holiday_banner = file_get_contents($holiday_url);
 
     if(isset($_GET["takuhaitest"])){
       $view_file = "mailingkit.test";
@@ -494,21 +489,8 @@ $context = stream_context_create([
           return redirect('/info');
       }
 
-      // Stream contextを作成
-      $context = stream_context_create([
-          'ssl' => [
-              'verify_peer'      => false,
-              'verify_peer_name' => false
-          ]
-      ]);
-
       $kaigai_url = "https://rifa.life/refastaProject/kaigaiiphanbetsu/{$ip}";
-      try {
-          $kaigai_html = file_get_contents($kaigai_url, false, $context);
-      } catch (\Exception $e) {
-          Log::error("海外IP判定エラー: " . $e->getMessage());
-          $kaigai_html = "JP"; // デフォルト値
-      }
+      $kaigai_html = file_get_contents($kaigai_url);
 
       if(
           ($kaigai_html !== "")
@@ -982,10 +964,6 @@ $context = stream_context_create([
         'content' => http_build_query(array(
           "text" => "【宅配申込】{$domain}{$ttl_type}/{$cv_device} {$datetime} {$speed_flag}\n" . $chat_txt,
         ), "", "&")
-      ),
-      'ssl' => array(
-        'verify_peer'      => false,
-        'verify_peer_name' => false
       )
     );
     $context = stream_context_create($options);
@@ -993,7 +971,7 @@ $context = stream_context_create([
     try{
       file_get_contents('https://rifa.life/refastaProject/pushGoogleChatSpace/' . $send_space , false, $context);
     }catch(\Exception $e){
-      Log::error("Google Chat通知エラー: " . $e->getMessage());
+      // echo $e->getMessage();
     }
 
 // ▼▼▼▼▼▼▼▼▼ n8n 追加コード ここから (cURL使用) ▼▼▼▼▼▼▼▼▼
@@ -1098,19 +1076,41 @@ $context = stream_context_create([
     }
 //////////////////////end DB保存//////////////////////
 
-    $input_values = $request;
-    $to = env("MAIL_FROM_ADDRESS");
-    $title = $store_title;
-    $type = 'mailingkit';
-    $send_type = 'shop';
-    Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    // 店舗側へのメール送信
+    $mail_error_shop = null;
+    try {
+        $input_values = $request;
+        $to = env("MAIL_FROM_ADDRESS");
+        $title = $store_title;
+        $type = 'mailingkit';
+        $send_type = 'shop';
+        Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    } catch (\Exception $e) {
+        $mail_error_shop = $e->getMessage();
+        \Log::error('宅配申込メール送信エラー（店舗側）', [
+            'to' => $to ?? 'unknown',
+            'error' => $mail_error_shop,
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
 
-    $input_values = $request;
-    $to = $user_mail;
-    $title = 'リファスタです【宅配買取申込完了】';
-    $type = 'mailingkit';
-    $send_type = 'visitor';
-    Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    // お客様側へのメール送信
+    $mail_error_visitor = null;
+    try {
+        $input_values = $request;
+        $to = $user_mail;
+        $title = 'リファスタです【宅配買取申込完了】';
+        $type = 'mailingkit';
+        $send_type = 'visitor';
+        Mail::to($to)->send(new PushMessage($input_values,$title,$type,$send_type));
+    } catch (\Exception $e) {
+        $mail_error_visitor = $e->getMessage();
+        \Log::error('宅配申込メール送信エラー（お客様側）', [
+            'to' => $to ?? 'unknown',
+            'error' => $mail_error_visitor,
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
 
     // 処理エラーが無ければ完了画面の表示
     // ブラウザリロード等での二重送信防止
@@ -1183,18 +1183,9 @@ $context = stream_context_create([
             "method"  => "POST",
             "header"  => implode("\r\n", $header),
             "content" => $data
-        ),
-        "ssl" => array(
-            "verify_peer"      => false,
-            "verify_peer_name" => false
         )
     );
-    try {
-        return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
-    } catch (\Exception $e) {
-        Log::error("Decrypt API エラー: " . $e->getMessage());
-        return $val;
-    }
+    return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
   }
 
   public function encrypt_mypage($val)
@@ -1217,18 +1208,9 @@ $context = stream_context_create([
             "method"  => "POST",
             "header"  => implode("\r\n", $header),
             "content" => $data
-        ),
-        "ssl" => array(
-            "verify_peer"      => false,
-            "verify_peer_name" => false
         )
     );
-    try {
-        return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
-    } catch (\Exception $e) {
-        Log::error("Encrypt API エラー: " . $e->getMessage());
-        return $val;
-    }
+    return file_get_contents($base_uri.$endpoint, false, stream_context_create($context));
   }
 
 }//end class
