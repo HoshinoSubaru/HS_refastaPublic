@@ -8,7 +8,7 @@
 --------------------------------------------
 @php $iteration = 1; @endphp
 @foreach($input_values["ingotDetails"] as $detail)
-@if(empty($detail['_type']))
+@if(!$detail || !is_array($detail) || empty($detail['_type']))
 @continue
 @endif
 ●入力内容{{ $iteration }}
